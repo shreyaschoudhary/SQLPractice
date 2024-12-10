@@ -1,0 +1,37 @@
+best practices for SQL joins:
+
+1. Use meaningful aliases:
+This makes your queries more readable and easier to understand.
+Example:
+SELECT c.customer_id, c.first_name, c.last_name, o.order_id, o.order_date
+FROM customers c
+INNER JOIN orders o ON c.customer_id = o.customer_id;
+
+2. Be mindful of NULL values:
+If a column can contain NULL values, consider using the COALESCE or NVL functions to replace NULLs with a default value.
+Example:
+SELECT c.customer_id, c.first_name, COALESCE(c.last_name, 'Unknown') AS last_name, o.order_id, o.order_date
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id;
+
+3. Avoid unnecessary joins:
+If you only need data from one table, don’t join it with another table unnecessarily.
+Example: If you only need customer information, don’t join the customers table with the orders table unless you need order-related data.
+
+4. Consider using subqueries:
+Subqueries can be used to filter or aggregate data before joining.
+Example:
+SQL
+SELECT c.customer_id, c.first_name, c.last_name, o.order_id, o.order_date
+FROM customers c
+INNER JOIN (SELECT order_id, customer_id FROM orders WHERE order_date > '2023-01-01') o ON c.customer_id = o.customer_id;
+
+5. Optimize your JOIN conditions:
+Ensure that the columns used in the JOIN condition are indexed for better performance.
+Consider using JOIN hints or query optimization techniques provided by your database system.
+
+6. Test and profile your queries:
+Use your database system’s tools to analyze query performance and identify bottlenecks.
+Make adjustments based on the results.
+
+Credit - https://medium.com/@datasciencenexus/sql-joins-inner-join-left-join-right-join-cross-join-9b815a0ad787
